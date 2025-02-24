@@ -1,3 +1,6 @@
+from stats import get_number_words
+import sys
+
 def main():
 
   def get_number_characters(text):
@@ -19,28 +22,30 @@ def main():
     return list_char
       
 
-  def get_number_words(text):
-    count = len(text.split())
-    return count
-
   def sort_on(dict):
     return dict["num"]
 
-  def get_report(letters_list, book_name, words_count):
+  def get_report(letters_list, book_path, words_count):
     letters_list.sort(key=sort_on, reverse=True)
   
-    print(f"--- Begin report of books/{book_name}.txt ---")
-    print(f"{words_count} found in the document")
+    print(f"============ BOOKBOT ============")
+    print(f"Analyzing book found at {book_path}...")
+    print("----------- Word Count ----------")
+    print(f"Found {words_count} total words")
+    print("--------- Character Count -------")
     for letter in letters_list:
-      print(f"The '{letter["letter"]}' character was found {letter["num"]} times")
-    print("--- End report ---")
+      print(f"{letter["letter"]}: {letter["num"]}")
+    print("============= END ===============")
   
-  with open("file/location") as file:
+  with open(sys.argv[1]) as file:
     file_content = file.read()
     letters_list = get_number_characters(file_content)
     words_count = get_number_words(file_content)
-    book_name = "frankenstein"
-    get_report(letters_list, book_name, words_count)
+    book_path = sys.argv[1]
+    get_report(letters_list, book_path, words_count)
 
-
-main()
+if sys.argv.__len__() < 2:
+  print("Usage: python3 main.py <path_to_book>")
+  sys.exit(1)
+else:
+  main()
